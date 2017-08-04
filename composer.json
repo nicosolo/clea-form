@@ -1,0 +1,21 @@
+{
+  "name": "clea/form",
+  "description": "Simple php form manager",
+  "type": "library",
+   "license": "MIT",
+  "require": {
+    "respect/validation": "^1.1",
+    "php": ">=7.1"
+  },
+  "authors": [
+    {
+      "name": "Nicolas Solioz",
+      "email": "me@nico.news"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Clea\\Form\\": "src/"
+    }
+  }
+}
