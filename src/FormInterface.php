@@ -6,8 +6,7 @@ namespace Clea\Form;
 
 interface FormInterface
 {
-    public function __construct($name = null);
-
+    public function build(): self;
     public function getName(): string;
 
     /**

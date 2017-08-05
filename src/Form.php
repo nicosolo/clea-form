@@ -3,6 +3,8 @@
 namespace Clea\Form;
 
 
+use Psr\Http\Message\ServerRequestInterface;
+
 class Form implements FormInterface
 {
     /**
@@ -37,9 +39,9 @@ class Form implements FormInterface
     }
 
     /**
-     * @return $this
+     * @return FormInterface
      */
-    protected function build(): self
+    public function build(): FormInterface
     {
         return $this;
     }
@@ -61,20 +63,46 @@ class Form implements FormInterface
     }
 
 
+    public function isSubmitted(ServerRequestInterface $request){
+        $method = strtoupper($this->getMethod());
+        if($request->getMethod() != $method){
+            return false;
+        }
+
+        if ($method == "POST") {
+            $params = $request->getParsedBody();
+        } else {
+            $params = $request->getQueryParams();
+        }
+        if (isset($params[$this->getName()])) {
+            return true;
+        }
+
+        return false;
+
+    }
+
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      */
-    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request): void
+    public function handleRequest(ServerRequestInterface $request): void
     {
+        $method = strtoupper($request->getMethod());
 
-        if (strtolower($request->getMethod()) == "post") {
+        if ($method == "POST") {
             $params = $request->getParsedBody();
         } else {
             $params = $request->getQueryParams();
         }
 
-        $this->handleData($params);
+        foreach ($this->getFields() as $field) {
+
+            if (isset($params[$field->getName()])) {
+                $field->setValue($params[$field->getName()]);
+            }
+        }
     }
+
 
     /**
      * @param \ArrayAccess $data

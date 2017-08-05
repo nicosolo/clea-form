@@ -22,13 +22,4 @@ class DateField extends Field
         return new \DateTime($this->getValue());
     }
 
-    /**
-     * @param $value
-     * @return FieldInterface
-     */
-    public function setValue($value): FieldInterface
-    {
-        parent::setValue(new \DateTime($value));
-        return $this;
-    }
 }
