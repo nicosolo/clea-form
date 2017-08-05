@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nico
- * Date: 07.07.17
- * Time: 18:16
- */
 
 namespace Clea\Form\Field;
 
@@ -13,10 +7,13 @@ use Clea\Form\Field;
 
 class TextField extends Field
 {
-    public function validate()
+    /**
+     * @return bool
+     */
+    public function validate(): bool
     {
 
-        v::max(255)->validate($this->getValue());
+        v::max(255)->validate($this->getValue()) and parent::validate();
     }
 
 

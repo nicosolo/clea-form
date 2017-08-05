@@ -3,7 +3,7 @@
 namespace Clea\Form;
 
 
-class Form
+class Form implements FormInterface
 {
     /**
      * @var boolean
@@ -23,23 +23,25 @@ class Form
     /**
      * @var string
      */
-    private $name = "";
+    protected $name = "";
 
     /**
      * @var array
      */
-    private $fields = [];
+    protected $fields = [];
 
-    public function __construct()
+    public function __construct($name = null)
     {
+        $this->name = $name;
         $this->build();
     }
 
     /**
      * @return $this
      */
-    protected function build()
+    protected function build(): self
     {
+        return $this;
     }
 
     /**
@@ -61,71 +63,39 @@ class Form
 
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return bool
      */
-    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request)
+    public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request): void
     {
 
-            if (strtolower($request->getMethod()) == "post") {
-                $params = $request->getParsedBody();
-            } else {
-                $params = $request->getQueryParams();
-            }
+        if (strtolower($request->getMethod()) == "post") {
+            $params = $request->getParsedBody();
+        } else {
+            $params = $request->getQueryParams();
+        }
 
-
-            foreach ($this->getFields() as $field) {
-
-                if (isset($params[$field->getName()])) {
-                    $field->setValue($params[$field->getName()]);
-                }
-            }
-            return true;
-
-        return false;
+        $this->handleData($params);
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return bool
+     * @param \ArrayAccess $data
      */
-    public function handleData(\ArrayAccess $data)
+    public function handleData($data)
     {
 
         foreach ($this->getFields() as $field) {
 
             if (isset($data[$field->getName()])) {
-
                 $field->setValue($data[$field->getName()]);
             }
         }
-        return true;
 
     }
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return bool
-     */
-    public function isSubmited(\Psr\Http\Message\ServerRequestInterface $request): bool
-    {
-
-        if (strtolower($request->getMethod()) == strtolower($this->getMethod())) {
-            if (strtolower($request->getMethod()) == "post") {
-                $params = $request->getParsedBody();
-            } else {
-                $params = $request->getQueryParams();
-            }
-            if (isset($params[$this->getName()])) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * @return boolean
      */
-    public function validate()
+    public function validate(): bool
     {
         foreach ($this->getFields() as $field) {
 
@@ -155,12 +125,12 @@ class Form
     }
 
     /**
-     * @param Field $field
-     * @return $this
+     * @param FieldInterface $field
+     * @return FormInterface
      */
-    public function addField(Field $field): self
+    public function addField(FieldInterface $field): FormInterface
     {
-        $field->setParentForm($this);
+        $field->setForm($this);
         $this->fields[$field->getName()] = $field;
         return $this;
     }
@@ -223,7 +193,7 @@ class Form
     }
 
     /**
-     * @param array $fields
+     * @param FieldInterface[] $fields
      */
     public function setFields(array $fields)
     {
@@ -241,9 +211,9 @@ class Form
 
     /**
      * @param $name
-     * @return Field
+     * @return Filed
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (!isset($this->fields[$name])) {
             return false;

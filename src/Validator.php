@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nico
- * Date: 07.07.17
- * Time: 13:36
- */
 
 namespace Clea\Form;
 

@@ -1,17 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nico
- * Date: 09.07.17
- * Time: 01:46
- */
 
 namespace Clea\Form\Field;
 
 
 use Clea\Form\Field;
+use Clea\Form\FieldInterface;
 
-class Date extends Field
+class DateField extends Field
 {
     /**
      * @return int
@@ -25,5 +20,15 @@ class Date extends Field
      */
     public function getDateTime(): \DateTime{
         return new \DateTime($this->getValue());
+    }
+
+    /**
+     * @param $value
+     * @return FieldInterface
+     */
+    public function setValue($value): FieldInterface
+    {
+        parent::setValue(new \DateTime($value));
+        return $this;
     }
 }

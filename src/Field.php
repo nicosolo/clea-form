@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nico
- * Date: 07.07.17
- * Time: 13:36
- */
 
 namespace Clea\Form;
 
 
-class Field
+class Field implements FieldInterface
 {
     /**
      * @var string
@@ -35,35 +29,34 @@ class Field
      * @var null|string
      */
     private $label;
-    /**
-     * @var string
-     */
-    private $group;
+
     /**
      * @var \Clea\Form\Form
      */
-    private $parentForm;
+    private $form;
+
+
 
     /**
      * Field constructor.
-     * @param string $name
-     * @param null $value
+     * @param $name
+     * @param null $validators
      */
-    public function __construct($name, $validators = [], $label = null, $group = "default")
+    public function __construct($name, $validators = null)
     {
         $this->errors = new Error;
         if ($validators instanceof Validator) {
             $this->addValidator($validators);
+        } elseif ($validators == null) {
+            $this->validators = [];
         } else {
             $this->validators = $validators;
         }
 
         $this->fieldName = $name;
-        $this->label = $label;
-        $this->group = $group;
     }
 
-    public function validate()
+    public function validate(): bool
     {
         foreach ($this->getValidators() as $validator) {
             if (!$validator->validate($this->getValue())) {
@@ -102,23 +95,22 @@ class Field
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value)
+    public function setValue($value): FieldInterface
     {
         $this->value = $value;
+       return $this;
     }
+
 
     /**
      * @return mixed
      */
-    public function getErrors()
+    public function getErrors(): Error
     {
         return $this->errors;
     }
 
-    public function hasError()
+    public function hasError(): bool
     {
 
         if ($this->errors->count() >= 1) {
@@ -144,8 +136,8 @@ class Field
     }
 
     /**
-     * @param $callBack
-     * @param $errorMessage
+     * @param Validator $validator
+     * @return Field
      */
     public function addValidator(Validator $validator): self
     {
@@ -169,37 +161,23 @@ class Field
         $this->label = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getGroup(): string
-    {
-        return $this->group;
-    }
-
-    /**
-     * @param string $group
-     */
-    public function setGroup(string $group)
-    {
-        $this->group = $group;
-    }
 
     /**
      * @return Form
      */
-    public function getParentForm(): Form
+    public function getForm(): Form
     {
-        return $this->parentForm;
+        return $this->form;
     }
 
     /**
-     * @param Form $parentForm
+     * @param Form $form
      */
-    public function setParentForm(Form $parentForm)
+    public function setForm(Form $form)
     {
-        $this->parentForm = $parentForm;
+        $this->form = $form;
     }
+
 
 
 }

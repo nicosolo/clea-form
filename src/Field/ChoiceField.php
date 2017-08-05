@@ -1,17 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nico
- * Date: 08.07.17
- * Time: 18:35
- */
+
 
 namespace Clea\Form\Field;
 
 
 use Clea\Form\Field;
 
-class Select extends Field
+class ChoiceField extends Field
 {
     /**
      * @var callable|\ArrayAccess
