@@ -32,8 +32,14 @@ class Form implements FormInterface
      */
     protected $fields = [];
 
-    public function __construct($name = null)
+    /**
+     * @var \ArrayAccess
+     */
+    protected $data;
+
+    public function __construct($name = null, $data = null)
     {
+        $this->data = $data;
         $this->name = $name;
         $this->build();
     }
@@ -63,9 +69,10 @@ class Form implements FormInterface
     }
 
 
-    public function isSubmitted(ServerRequestInterface $request){
+    public function isSubmitted(ServerRequestInterface $request)
+    {
         $method = strtoupper($this->getMethod());
-        if($request->getMethod() != $method){
+        if ($request->getMethod() != $method) {
             return false;
         }
 
@@ -101,6 +108,17 @@ class Form implements FormInterface
                 $field->setValue($params[$field->getName()]);
             }
         }
+        if ($this->data != null and $this->data instanceof \ArrayObject) {
+            $this->setData($this->getData());
+        }
+    }
+
+    public function setData($data)
+    {
+        foreach ($data as $key => $value) {
+            $this->data->offsetSet($key, $value);
+        }
+
     }
 
 
@@ -116,6 +134,7 @@ class Form implements FormInterface
                 $field->setValue($data[$field->getName()]);
             }
         }
+
 
     }
 

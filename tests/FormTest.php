@@ -28,7 +28,7 @@ final class FormTest extends TestCase
     public function testEmbedFormCreation(): void
     {
         $date = new \DateTime("now");
-        $datas = [
+        $data = [
             "embed" => [
                 "embed1_test" => "Hello",
                 "embed2" => [
@@ -51,9 +51,8 @@ final class FormTest extends TestCase
             )
         )
             ->addField(new \Clea\Form\Field\DateField("date"));
-        $form->handleData($datas);
-        $datas["date"] = new \DateTime($datas["date"]);
-        $this->assertEquals($datas, $form->getData());
+        $form->handleData($data);
+        $this->assertEquals($data, $form->getData());
     }
 
     public function testCollectionFormCreation(): void
@@ -92,14 +91,14 @@ final class FormTest extends TestCase
             );
         });
 
+        $data = new ArrayObject();
 
-        $form = new \Clea\Form\Form();
+        $form = new \Clea\Form\Form(null);
         $form->addField(
             $collection
         )->addField(new \Clea\Form\Field\TextField("first_level", []));
 
         $form->handleData($resultExcepted);
-
         $this->assertEquals($resultExcepted, $form->getData());
     }
 
