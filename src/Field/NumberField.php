@@ -17,7 +17,7 @@ class NumberField extends Field
     public function validate(): bool
     {
         if(empty($this->getValue())){
-            return true;
+            return parent::validate();
         }
         return is_numeric($this->getValue()) and parent::validate();
     }
