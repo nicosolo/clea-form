@@ -3,7 +3,7 @@
 namespace Clea\Form\Field;
 
 use Clea\Form\Field;
-
+use Respect\Validation\Validator as v;
 
 class TextField extends Field
 {
@@ -13,7 +13,7 @@ class TextField extends Field
     public function validate(): bool
     {
 
-        v::max(255)->validate($this->getValue()) and parent::validate();
+        return v::max(255)->validate($this->getValue()) and parent::validate();
     }
 
 

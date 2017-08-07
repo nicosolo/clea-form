@@ -62,14 +62,16 @@ final class FormTest extends TestCase
             "test_collection" => [
                 1 => [
                         "embed2" => [
-                            "embed2_test" => "embed2_test_value"
+                            "embed2_test" => "embed2_test_value",
+                            "number_field" => ""
                         ],
                         "foo" => "foo_value"
 
                 ],
                 2 => [
                         "embed2" => [
-                            "embed2_test" => "embed2_test_value2"
+                            "embed2_test" => "embed2_test_value2",
+                            "number_field" => "12"
                         ],
                         "foo" => "foo_value2"
 
@@ -85,6 +87,7 @@ final class FormTest extends TestCase
                         new \Clea\Form\Field\FormField(
                             (new \Clea\Form\Form("embed2"))
                                 ->addField(new \Clea\Form\Field\TextField("embed2_test"))
+                                ->addField(new \Clea\Form\Field\NumberField("number_field"))
                         )
                     )
                     ->addField(new \Clea\Form\Field\TextField("foo"))
@@ -99,6 +102,7 @@ final class FormTest extends TestCase
         )->addField(new \Clea\Form\Field\TextField("first_level", []));
 
         $form->handleData($resultExcepted);
+        var_dump($form->validate());
         $this->assertEquals($resultExcepted, $form->getData());
     }
 
