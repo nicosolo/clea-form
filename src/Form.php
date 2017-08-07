@@ -92,7 +92,7 @@ class Form implements FormInterface
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      */
-    public function handleRequest(ServerRequestInterface $request): void
+    public function handleRequest(ServerRequestInterface $request)
     {
         $method = strtoupper($request->getMethod());
 
