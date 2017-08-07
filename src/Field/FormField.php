@@ -87,4 +87,9 @@ class FormField extends Field
     {
         return $this->form;
     }
+
+    public function getFields()
+    {
+        return $this->form->getFields();
+    }
 }
