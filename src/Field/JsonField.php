@@ -17,7 +17,7 @@ class JsonField extends Field
 
     public function setValue($value): FieldInterface
     {
-        if (is_iterable($value)) {
+        if ($value instanceof \Traversable) {
             return parent::setValue($value);
         } else {
             return parent::setValue(json_decode($value, true));
@@ -25,7 +25,7 @@ class JsonField extends Field
     }
 
     public function getJson(){
-        if (is_iterable($this->getValue())) {
+        if ($this->getValue() instanceof \Traversable) {
             return json_encode($this->getValue());
         }
     }
