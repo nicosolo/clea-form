@@ -241,6 +241,7 @@ class Form implements FormInterface
 
     /**
      * @param FieldInterface[] $fields
+     * @return void
      */
     public function setFields(array $fields)
     {
@@ -250,6 +251,7 @@ class Form implements FormInterface
 
     /**
      * @param string $name
+     * @return void
      */
     public function removeField(string $name)
     {
@@ -258,9 +260,9 @@ class Form implements FormInterface
 
     /**
      * @param $name
-     * @return Filed
+     * @return FieldInterface
      */
-    public function get(string $name)
+    public function get(string $name): FieldInterface
     {
         if (!isset($this->fields[$name])) {
             return false;

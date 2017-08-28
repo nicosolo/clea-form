@@ -73,7 +73,7 @@ interface FormInterface
      * @param string $name
      * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): FieldInterface;
 
     /**
      * @return string
