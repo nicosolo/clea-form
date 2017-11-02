@@ -262,10 +262,10 @@ class Form implements FormInterface
      * @param $name
      * @return FieldInterface
      */
-    public function get(string $name): FieldInterface
+    public function get(string $name): ?FieldInterface
     {
         if (!isset($this->fields[$name])) {
-            return false;
+            return null;
         }
         return $this->fields[$name];
     }
