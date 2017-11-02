@@ -91,6 +91,7 @@ class Form implements FormInterface
 
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return mixed|void
      */
     public function handleRequest(ServerRequestInterface $request)
     {
@@ -262,7 +263,7 @@ class Form implements FormInterface
      * @param $name
      * @return FieldInterface
      */
-    public function get(string $name): ?FieldInterface
+    public function get(string $name)
     {
         if (!isset($this->fields[$name])) {
             return null;
