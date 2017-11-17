@@ -88,6 +88,14 @@ class FormField extends Field
         return $this->form;
     }
 
+    /**
+     * @param string $name
+     * @return FieldInterface
+     */
+    public function get(string $name): ?FieldInterface{
+       return  $this->form->get($name);
+    }
+
     public function getFields()
     {
         return $this->form->getFields();

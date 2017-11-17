@@ -10,6 +10,10 @@ class Form implements FormInterface
     /**
      * @var boolean
      */
+    private $containingFile = false;
+    /**
+     * @var boolean
+     */
     private $error = false;
 
     /**
@@ -95,6 +99,10 @@ class Form implements FormInterface
      */
     public function handleRequest(ServerRequestInterface $request)
     {
+        $uploadedFiles = [];
+        if($this->isContainingFile()){
+            $uploadedFiles = $request->getUploadedFiles();
+        }
         $method = strtoupper($request->getMethod());
 
         if ($method == "POST") {
@@ -108,10 +116,14 @@ class Form implements FormInterface
             if (isset($params[$field->getName()])) {
                 $field->setValue($params[$field->getName()]);
             }
+            if($this->isContainingFile() and isset($uploadedFiles[$field->getName()])){
+                $field->setValue($uploadedFiles[$field->getName()]);
+            }
         }
         if ($this->data != null and $this->data instanceof \ArrayObject) {
             $this->setData($this->getData());
         }
+
     }
 
     public function setData($data)
@@ -287,6 +299,23 @@ class Form implements FormInterface
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isContainingFile(): bool
+    {
+        return $this->containingFile;
+    }
+
+    /**
+     * @param bool $containingFile
+     */
+    public function setContainingFile(bool $containingFile)
+    {
+        $this->containingFile = $containingFile;
     }
 
 
