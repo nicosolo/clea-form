@@ -30,4 +30,8 @@ class NumberField extends Field
         return parent::getValue()+0;
     }
 
+    public function toArray(): array
+    {
+        return ["type" => "number"] + parent::toArray();
+    }
 }

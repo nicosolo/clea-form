@@ -105,4 +105,11 @@ class Error implements \ArrayAccess
         return array_shift($this->errors);
     }
 
+    /**
+     * @return array
+     */
+    public function toArray(){
+        return (array)$this->errors;
+    }
+
 }

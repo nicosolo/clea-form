@@ -22,4 +22,9 @@ class DateField extends Field
         return new \DateTime($this->getValue());
     }
 
+    public function toArray(): array
+    {
+        return ["type" => "date"] + parent::toArray();
+    }
+
 }

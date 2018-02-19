@@ -60,5 +60,10 @@ class FileField extends Field
         $this->uploadedFile = $uploadedFile;
     }
 
+    public function toArray(): array
+    {
+        return ["type" => "file"] + parent::toArray();
+    }
+
 
 }

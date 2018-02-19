@@ -7,7 +7,7 @@ namespace Clea\Form;
 interface FormInterface
 {
     public function build(): self;
-    public function getName(): string;
+    public function getName(): ?string;
 
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -79,4 +79,9 @@ interface FormInterface
      * @return string
      */
     public function __toString(): string;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
 }

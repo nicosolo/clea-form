@@ -100,4 +100,10 @@ class FormField extends Field
     {
         return $this->form->getFields();
     }
+
+
+    public function toArray(): array
+    {
+        return ["type" => "form", "sub" => $this->toArray()] + parent::toArray();
+    }
 }

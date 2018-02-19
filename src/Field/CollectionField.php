@@ -215,4 +215,13 @@ class CollectionField extends Field implements \ArrayAccess, \Iterator
     {
         $this->index = 0;
     }
+
+    public function toArray(): array
+    {
+        $fields = [];
+        foreach ($this->getField() as $field) {
+            $fields[$field->getName()] = $field->toArray();
+        }
+        return ["type" => "collection", "fields" => $fields] + parent::toArray();
+    }
 }

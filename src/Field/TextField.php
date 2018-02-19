@@ -16,5 +16,9 @@ class TextField extends Field
         return v::max(255)->validate($this->getValue()) and parent::validate();
     }
 
+    public function toArray(): array
+    {
+        return ["type" => "text"] + parent::toArray();
+    }
 
 }

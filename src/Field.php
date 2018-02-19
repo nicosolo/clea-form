@@ -178,6 +178,11 @@ class Field implements FieldInterface
         $this->form = $form;
     }
 
-
-
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return ["name" => $this->getName(), "value" => $this->getValue(), "errors" => $this->getErrors()->toArray(), "type" => "default"];
+    }
 }

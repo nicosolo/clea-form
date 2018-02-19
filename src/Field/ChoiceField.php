@@ -44,5 +44,15 @@ class ChoiceField extends Field
     }
 
 
+    public function __construct($name, $validators = null)
+    {
+        parent::__construct($name, $validators);
+    }
+
+    public function toArray(): array
+    {
+        return ["type" => "choices", "choices" => $this->getChoices()] + parent::toArray();
+    }
+
 
 }

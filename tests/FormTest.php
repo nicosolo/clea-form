@@ -27,6 +27,11 @@ final class FormTest extends TestCase
 
 
         $form = new \Clea\Form\Form(null);
+        $choice = new \Clea\Form\Field\ChoiceField("choice_field");
+        $choice->setChoices(function(){
+            return ["choice_1" => "Choice 1", "choice_2" => "Choice 2", "choice_3" => "Choice 3"];
+        });
+        $form->addField($choice);
         $form->addField(
             $collection
         )->addField(new \Clea\Form\Field\TextField("first_level", [new \Clea\Form\Validator(function ($value) {
@@ -56,6 +61,7 @@ final class FormTest extends TestCase
 
                 ]
             ],
+            "choice_field" => "choice_1",
             "first_level" => 123
         ];
     }
@@ -74,6 +80,19 @@ final class FormTest extends TestCase
         }
 
         return $request;
+    }
+
+    public function testToArray(){
+        $form = $this->makeForm();
+        $form->handleData($this->getData());
+
+        $this->assertEquals($form->toArray()["fields"]["choice_field"], [
+            "type" => "choices",
+            "choices" => ["choice_1" => "Choice 1", "choice_2" => "Choice 2", "choice_3" => "Choice 3"],
+            "name" => "choice_field",
+            "value" => "choice_1",
+            "errors" => []
+        ]);
     }
 
 

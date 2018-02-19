@@ -41,4 +41,9 @@ interface FieldInterface
      * @return bool
      */
     public function hasError(): bool;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
 }

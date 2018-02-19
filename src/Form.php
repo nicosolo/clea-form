@@ -57,9 +57,9 @@ class Form implements FormInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -100,7 +100,7 @@ class Form implements FormInterface
     public function handleRequest(ServerRequestInterface $request)
     {
         $uploadedFiles = [];
-        if($this->isContainingFile()){
+        if ($this->isContainingFile()) {
             $uploadedFiles = $request->getUploadedFiles();
         }
         $method = strtoupper($request->getMethod());
@@ -116,7 +116,7 @@ class Form implements FormInterface
             if (isset($params[$field->getName()])) {
                 $field->setValue($params[$field->getName()]);
             }
-            if($this->isContainingFile() and isset($uploadedFiles[$field->getName()])){
+            if ($this->isContainingFile() and isset($uploadedFiles[$field->getName()])) {
                 $field->setValue($uploadedFiles[$field->getName()]);
             }
         }
@@ -318,5 +318,21 @@ class Form implements FormInterface
         $this->containingFile = $containingFile;
     }
 
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $form = [
+            "name" => $this->getName(),
+            "method" => $this->getMethod(),
+            "action" => $this->getAction()
+        ];
+        foreach ($this->getFields() as $field) {
+            $form["fields"][$field->getName()] = $field->toArray();
+        }
+        return $form;
+    }
 
 }
